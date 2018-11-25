@@ -1,8 +1,4 @@
 import  tensorflow as tf
-import matplotlib.pyplot as plt     # plt 用于显示图片
-import math as math    #
-import numpy as np
-import input_data
 import time
 import os
 import  MyImageDo

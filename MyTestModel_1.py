@@ -1,7 +1,9 @@
+import sys
+import win32ui
 import numpy as np
 import MyClassify
 import MyImageDo as myimgdo
-import 
+
 
 
 def binarizing(img,threshold): #input: gray image
@@ -22,8 +24,14 @@ ckpt_dir = ".\ckpt_dir";
 classfier=MyClassify.MyClassifier(ckpt_dir);
 
 #--------加载要检测图片
+dlg=win32ui.CreateFileDialog(1);
+dlg.SetOFNInitialDir('E:/Python') # 设置打开文件对话框中的初始显示目录
+dlg.DoModal()
+filename = dlg.GetPathName() # 获取选择的文件名称
+if not str(filename).__contains__('.'):
+    sys.exit();
 mydo= myimgdo.MyImageDo();
-img=mydo.ReadImgFromFile('img5.jpg');
+img=mydo.ReadImgFromFile(filename);
 #-------格式归一(大小、数据格式)
 img=img.resize((28,28)).convert('L');                   #先转换为28*28的标准灰度图像
 img=binarizing(img,230);
@@ -34,3 +42,4 @@ if len(img.shape)==2:                           #标准四通道转换
 else:
     img=np.reshape(img,newshape=[1,img.shape[0],img.shape[1],img.shape[2]]);
 print("检测结果为:",classfier.Classfy(img)[0]);
+print("检测耗时:",classfier.detecttime);
